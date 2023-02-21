@@ -32,8 +32,6 @@ public class PageEntry implements Comparable<PageEntry> {
 
     @Override
     public String toString(){
-//        return String.valueOf(new PageEntry(getPdfName(), getPage(), getCount()));
-
         return "\n {" + " \n" +
                 "   \"pdfName\": \"" + pdfName + "\", \n" +
                 "   \"page\": " + page + ", \n" +

@@ -9,8 +9,6 @@ import java.util.List;
 
 public class BooleanSearchEngine implements SearchEngine {
     private Map<String, List<PageEntry>> wordList = new HashMap<>();
-    private List<PageEntry> resultPage = new ArrayList<>();
-
 
     public BooleanSearchEngine(File pdfsDir) throws IOException {
         //Создание объекта пдф документа
@@ -32,32 +30,20 @@ public class BooleanSearchEngine implements SearchEngine {
                     freqs.put(word, freqs.getOrDefault(word, 0) + 1);
                 }
 
+                //получить объект одной страницы и полистать
                 for (Map.Entry<String, Integer> entry : freqs.entrySet()){
                     List<PageEntry> pageEntryList = new ArrayList<>();
                     String key = entry.getKey();
+                    if (wordList.get(key) != null){
+                        pageEntryList = wordList.get(key);
+                    }
                     PageEntry pageEntry = new PageEntry(file, pages, entry);
+
                     pageEntryList.add(pageEntry);
                     wordList.put(key, pageEntryList);
-
-
                 }
-//                for (String word : freqs.keySet()){
-//                    PageEntry pageEntry = new PageEntry(file.getName(), pages, freqs.get(word));
-//                    if (!wordList.containsKey(word)) {
-//                        List<PageEntry> pageList = new ArrayList<>();
-//                        pageList.add(pageEntry);
-//                        wordList.put(word, pageList);
-//                    } else {
-//                        wordList.get(word).add(pageEntry);
-//                    }
-//
-//                    resultPage = new ArrayList<>(wordList.get(word.toLowerCase()));
-//                    resultPage.sort(Collections.reverseOrder());
-//                }
-
             }
         }
-        //получить объект одной страницы и полистать
     }
 
     @Override
