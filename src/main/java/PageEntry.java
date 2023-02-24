@@ -1,16 +1,18 @@
 import java.io.File;
-import java.util.Map;
+
+import com.google.gson.Gson;
 
 public class PageEntry implements Comparable<PageEntry> {
+    private static final Gson gson = new Gson();
+
     private final String pdfName;
     private final int page;
-    private final int count;
+    private int count;
 
-    public PageEntry(File pdfName, int page, Map.Entry<String, Integer> entry) {
-
+    public PageEntry(File pdfName, int page) {
         this.pdfName = pdfName.getName();
         this.page = page;
-        this.count = entry.getValue();
+        this.count = 0;
     }
 
     public String getPdfName() {
@@ -24,18 +26,37 @@ public class PageEntry implements Comparable<PageEntry> {
     public int getCount() {
         return count;
     }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof PageEntry)) {
+            return false;
+        }
+
+        PageEntry p = (PageEntry) o;
+
+        if(!this.pdfName.equals(p.pdfName)) {
+            return false;
+        }
+
+        if(this.page != p.page) {
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public int compareTo(PageEntry o) {
-
         return Integer.compare(count, o.count);
     }
 
     @Override
-    public String toString(){
-        return "\n {" + " \n" +
-                "   \"pdfName\": \"" + pdfName + "\", \n" +
-                "   \"page\": " + page + ", \n" +
-                "   \"count\": " + count + " \n" +
-                " }";
+    public String toString() {
+        // Использую статический объект Gson для сериализации в строку.
+        return gson.toJson(this);
     }
 }
